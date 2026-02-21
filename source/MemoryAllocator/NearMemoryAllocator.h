@@ -50,14 +50,16 @@ struct NearMemoryAllocator {
       if (addr)
         return {addr, in_size};
     } else {
-      auto search_range = MemRange(pos - range, range * 2);
+      auto start = pos >= range ? pos - range : 0;
+      auto search_range = MemRange(start, range * 2);
       return allocNearBlock(in_size, search_range, true);
     }
     return {};
   }
 
   MemBlock allocNearDataBlock(uint32_t in_size, addr_t pos, size_t range) {
-    auto search_range = MemRange(pos - range, range * 2);
+    auto start = pos >= range ? pos - range : 0;
+    auto search_range = MemRange(start, range * 2);
     return allocNearBlock(in_size, search_range, false);
   }
 
