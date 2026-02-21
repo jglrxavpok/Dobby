@@ -4,7 +4,13 @@
 #include <sys/types.h>
 #include <stddef.h>
 
-#if defined(__APPLE__) && (defined(__arm64e__) || __has_feature(ptrauth_calls))
+#if defined(__APPLE__)
+#if defined(__arm64e__) || __has_feature(ptrauth_calls)
+#define has_feature_ptrauth_calls
+#endif
+#endif
+
+#ifdef has_feature_ptrauth_calls
 #include <ptrauth.h>
 
 template <typename T> static inline T pac_strip(T &addr, bool keep = false) {
